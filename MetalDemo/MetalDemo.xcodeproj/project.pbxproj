@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F1C532CB2D08DA9D0008B585 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1C532CA2D08DA9D0008B585 /* AppDelegate.m */; };
-		F1C532CE2D08DA9D0008B585 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1C532CD2D08DA9D0008B585 /* ViewController.m */; };
+		F1C532CE2D08DA9D0008B585 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F1C532CD2D08DA9D0008B585 /* ViewController.mm */; };
 		F1C532D02D08DA9F0008B585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1C532CF2D08DA9F0008B585 /* Assets.xcassets */; };
 		F1C532D32D08DA9F0008B585 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1C532D12D08DA9F0008B585 /* Main.storyboard */; };
 		F1C532D52D08DA9F0008B585 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1C532D42D08DA9F0008B585 /* main.m */; };
@@ -18,6 +18,8 @@
 		F1C532FA2D08DC2C0008B585 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C532F92D08DC2C0008B585 /* Foundation.framework */; };
 		F1C532FC2D08DC350008B585 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C532FB2D08DC350008B585 /* Metal.framework */; };
 		F1C532FE2D08DC3B0008B585 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C532FD2D08DC3B0008B585 /* QuartzCore.framework */; };
+		F1C533012D08DD490008B585 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1C532FF2D08DD490008B585 /* Renderer.cpp */; };
+		F1C533032D08DFB90008B585 /* RendererAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = F1C533022D08DFB90008B585 /* RendererAdapter.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +44,7 @@
 		F1C532C92D08DA9D0008B585 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F1C532CA2D08DA9D0008B585 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F1C532CC2D08DA9D0008B585 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F1C532CD2D08DA9D0008B585 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F1C532CD2D08DA9D0008B585 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		F1C532CF2D08DA9F0008B585 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F1C532D22D08DA9F0008B585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F1C532D42D08DA9F0008B585 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -55,6 +57,10 @@
 		F1C532F92D08DC2C0008B585 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F1C532FB2D08DC350008B585 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		F1C532FD2D08DC3B0008B585 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F1C532FF2D08DD490008B585 /* Renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Renderer.cpp; path = src/Renderer.cpp; sourceTree = "<group>"; };
+		F1C533002D08DD490008B585 /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Renderer.hpp; path = src/Renderer.hpp; sourceTree = "<group>"; };
+		F1C533022D08DFB90008B585 /* RendererAdapter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RendererAdapter.mm; path = src/RendererAdapter.mm; sourceTree = "<group>"; };
+		F1C533042D08DFF10008B585 /* RendererAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RendererAdapter.h; path = src/RendererAdapter.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,11 +118,15 @@
 				F1C532C92D08DA9D0008B585 /* AppDelegate.h */,
 				F1C532CA2D08DA9D0008B585 /* AppDelegate.m */,
 				F1C532CC2D08DA9D0008B585 /* ViewController.h */,
-				F1C532CD2D08DA9D0008B585 /* ViewController.m */,
+				F1C532CD2D08DA9D0008B585 /* ViewController.mm */,
 				F1C532CF2D08DA9F0008B585 /* Assets.xcassets */,
 				F1C532D12D08DA9F0008B585 /* Main.storyboard */,
 				F1C532D42D08DA9F0008B585 /* main.m */,
 				F1C532D62D08DA9F0008B585 /* MetalDemo.entitlements */,
+				F1C532FF2D08DD490008B585 /* Renderer.cpp */,
+				F1C533002D08DD490008B585 /* Renderer.hpp */,
+				F1C533022D08DFB90008B585 /* RendererAdapter.mm */,
+				F1C533042D08DFF10008B585 /* RendererAdapter.h */,
 			);
 			path = MetalDemo;
 			sourceTree = "<group>";
@@ -277,8 +287,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1C532CE2D08DA9D0008B585 /* ViewController.m in Sources */,
+				F1C533012D08DD490008B585 /* Renderer.cpp in Sources */,
+				F1C532CE2D08DA9D0008B585 /* ViewController.mm in Sources */,
 				F1C532D52D08DA9F0008B585 /* main.m in Sources */,
+				F1C533032D08DFB90008B585 /* RendererAdapter.mm in Sources */,
 				F1C532CB2D08DA9D0008B585 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
