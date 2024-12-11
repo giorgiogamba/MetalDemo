@@ -27,5 +27,22 @@ Renderer::~Renderer()
 void Renderer::draw() const
 {
     std::cout << "Window Configuration" << std::endl;
+    
+    // Passes drawing information to the GPU by command queue
+    MTL::CommandBuffer* pCommandBuffer = pCommandQueue->commandBuffer();
+    
+    // RenderPassDsc receives pixels from previous steps in rendering pipeline
+    // Does 3 things: color attachments, deptch attachments, stencil attachments
+    MTL::RenderPassDescriptor* renderPassDsc = MTL::RenderPassDescriptor::alloc()->init();
+    renderPassDsc->colorAttachments()->object(0)->setTexture(pDrawable->texture());
+    renderPassDsc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+    renderPassDsc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(1.f, 0.f, 0.f, 1.f)); // Red
+    
+    MTL::RenderCommandEncoder* renderCommandEdr = pCommandBuffer->renderCommandEncoder(renderPassDsc);
+    renderCommandEdr->endEncoding();
+    pCommandBuffer->presentDrawable(pDrawable);
+    pCommandBuffer->commit();
+    
+    renderPassDsc->release();
 }
 
