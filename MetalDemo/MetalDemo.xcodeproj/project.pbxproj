@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F1961CE82D0D8B4B00040E03 /* notes.md in Resources */ = {isa = PBXBuildFile; fileRef = F1961CE72D0D8B4B00040E03 /* notes.md */; };
+		F1961CEA2D0DC8FF00040E03 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = F1961CE92D0DC8FF00040E03 /* Shaders.metal */; };
 		F1C532CB2D08DA9D0008B585 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1C532CA2D08DA9D0008B585 /* AppDelegate.m */; };
 		F1C532CE2D08DA9D0008B585 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F1C532CD2D08DA9D0008B585 /* ViewController.mm */; };
 		F1C532D02D08DA9F0008B585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1C532CF2D08DA9F0008B585 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		F1961CE72D0D8B4B00040E03 /* notes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = notes.md; sourceTree = "<group>"; };
+		F1961CE92D0DC8FF00040E03 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		F1C532C62D08DA9D0008B585 /* MetalDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1C532C92D08DA9D0008B585 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F1C532CA2D08DA9D0008B585 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				F1C533022D08DFB90008B585 /* RendererAdapter.mm */,
 				F1C533042D08DFF10008B585 /* RendererAdapter.h */,
 				F1961CE72D0D8B4B00040E03 /* notes.md */,
+				F1961CE92D0DC8FF00040E03 /* Shaders.metal */,
 			);
 			path = MetalDemo;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1961CEA2D0DC8FF00040E03 /* Shaders.metal in Sources */,
 				F1C533012D08DD490008B585 /* Renderer.cpp in Sources */,
 				F1C532CE2D08DA9D0008B585 /* ViewController.mm in Sources */,
 				F1C532D52D08DA9F0008B585 /* main.m in Sources */,
