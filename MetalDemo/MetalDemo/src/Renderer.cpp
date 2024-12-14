@@ -41,7 +41,29 @@ void Renderer::draw() const
     renderPassDsc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
     renderPassDsc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(1.f, 0.f, 0.f, 1.f)); // Red
     
+    // Cpu population, then GPU transfer
+    
+    // Defines triangle through buffer
+    const std::vector<float> triangle = // defines xyz coordinates for each vertex of the triangle in anticlockwise order
+    {
+        -0.5f, 0.5f, 0.f,
+        0.5f, 0.5f, 0.f,
+        0.f, -1.f, 0.f
+    };
+
+    // Use smart pointers instead of simple pointers in order to use the reference counting which invokes the lambda (which releases resources)
+    // when the pointer has not references anymore
+    const std::unique_ptr<MTL::Buffer, void(*)(MTL::Buffer * const)> pVertexBuffer(pDevice->newBuffer(triangle.data(), sizeof(float) * sizeof(triangle), MTL::ResourceStorageModeShared), [](MTL::Buffer * const buffer) { buffer->release(); });
+    
     MTL::RenderCommandEncoder* renderCommandEdr = pCommandBuffer->renderCommandEncoder(renderPassDsc);
+    
+    // In order to connect each rendering step/state with out shaders, we use the renderign pipeline state
+    renderCommandEdr->setRenderPipelineState(pRenderPipelineState.get());
+    
+    // GPU has a limited number of buffers that can allocated depending on the device we are runnign on
+    renderCommandEdr->setVertexBuffer(pVertexBuffer.get(), 0, 5);
+    renderCommandEdr->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::Integer(0), NS::UInteger(sizeof(triangle) / 3));
+    
     renderCommandEdr->endEncoding();
     pCommandBuffer->presentDrawable(pDrawable);
     pCommandBuffer->commit();
