@@ -5,26 +5,26 @@
 //  Created by Giorgio Gamba on 10/12/24.
 //
 
-#include "Metal/Metal.hpp"
-#include "QuartzCore/CAMetalDrawable.hpp"
+#include <Metal/Metal.hpp>
+#include <QuartzCore/CAMetalDrawable.hpp>
 
 class Renderer
 {
     
 public:
     
-    Renderer(CA::MetalDrawable* const pDrawable, MTL::Device* const pDevice);
+    Renderer(MTL::Device* const pDevice);
     ~Renderer();
     
-    void draw() const;
+    void drawFrame(const CA::MetalDrawable* const drawable);
     
 private:
     
-    CA::MetalDrawable* pDrawable;
+    void buildShaders();
+    
     MTL::Device* const pDevice;
     MTL::CommandQueue* const pCommandQueue;
-    
     std::unique_ptr<MTL::RenderPipelineState, void(*)(MTL::RenderPipelineState*)> pRenderPipelineState;
     
-    void buildShaders();
+    float deltaTime;
 };

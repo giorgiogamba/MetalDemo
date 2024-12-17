@@ -9,11 +9,21 @@
 
 @implementation RendererAdapter
 
--(void)draw:(id <CAMetalDrawable>) drawable device: (id <MTLDevice>) device
+- (nonnull instancetype) initWithMTKView: (MTKView*)pView
 {
-    // bridge makes casts without transferring ownership of the object
-    pRenderer = new Renderer((__bridge CA::MetalDrawable *) drawable, (__bridge MTL::Device *) device);
-    pRenderer->draw();
+    self = [super init];
+    pRenderer = new Renderer((__bridge MTL::Device *) pView.device);
+    return self;
+}
+
+-(void)drawInMTKView:(MTKView *)view
+{
+    pRenderer->drawFrame((__bridge CA::MetalDrawable *)view.currentDrawable);
+}
+
+-(void)mtkView:(MTKView *)view drawableSizeWillChange:(CGSize)size
+{
+    // Empty override
 }
 
 -(void)dealloc

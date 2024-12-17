@@ -13,11 +13,11 @@
 
 #include "Renderer.hpp"
 
-Renderer::Renderer(CA::MetalDrawable* const pDrawable, MTL::Device* const pDevice)
-    : pDrawable(pDrawable)
-    , pDevice(pDevice)
+Renderer::Renderer(MTL::Device* const pDevice)
+    : pDevice(pDevice)
     , pCommandQueue(pDevice->newCommandQueue())
     , pRenderPipelineState(nullptr, [](MTL::RenderPipelineState* const p) { p->release(); })
+    , deltaTime(0.f)
 {
     buildShaders();
 }
@@ -27,17 +27,15 @@ Renderer::~Renderer()
     pCommandQueue->release();
 }
 
-void Renderer::draw() const
+void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
 {
-    std::cout << "Window Configuration" << std::endl;
-    
     // Passes drawing information to the GPU by command queue
     MTL::CommandBuffer* pCommandBuffer = pCommandQueue->commandBuffer();
     
     // RenderPassDsc receives pixels from previous steps in rendering pipeline
     // Does 3 things: color attachments, deptch attachments, stencil attachments
     MTL::RenderPassDescriptor* renderPassDsc = MTL::RenderPassDescriptor::alloc()->init();
-    renderPassDsc->colorAttachments()->object(0)->setTexture(pDrawable->texture());
+    renderPassDsc->colorAttachments()->object(0)->setTexture(drawable->texture());
     renderPassDsc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
     renderPassDsc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(1.f, 0.f, 0.f, 1.f)); // Red
     
@@ -50,6 +48,8 @@ void Renderer::draw() const
         0.5f, 0.5f, 0.f,
         0.f, -1.f, 0.f
     };
+    
+    deltaTime += 0.1f;
 
     // Use smart pointers instead of simple pointers in order to use the reference counting which invokes the lambda (which releases resources)
     // when the pointer has not references anymore
@@ -62,10 +62,13 @@ void Renderer::draw() const
     
     // GPU has a limited number of buffers that can allocated depending on the device we are runnign on
     renderCommandEdr->setVertexBuffer(pVertexBuffer.get(), 0, 5);
+    
+    renderCommandEdr->setVertexBytes(&deltaTime, sizeof(float), 7); // only when the passed data is less than 4kb
+    
     renderCommandEdr->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::Integer(0), NS::UInteger(sizeof(triangle) / 3));
     
     renderCommandEdr->endEncoding();
-    pCommandBuffer->presentDrawable(pDrawable);
+    pCommandBuffer->presentDrawable(drawable);
     pCommandBuffer->commit();
     
     renderPassDsc->release();
