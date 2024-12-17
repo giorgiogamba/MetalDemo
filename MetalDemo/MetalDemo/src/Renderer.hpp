@@ -5,8 +5,8 @@
 //  Created by Giorgio Gamba on 10/12/24.
 //
 
-#include "Metal/Metal.hpp"
-#include "QuartzCore/CAMetalDrawable.hpp"
+#include <Metal/Metal.hpp>
+#include <QuartzCore/CAMetalDrawable.hpp>
 
 class Renderer
 {
