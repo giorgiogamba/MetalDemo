@@ -13,9 +13,8 @@
 
 #include "Renderer.hpp"
 
-Renderer::Renderer(CA::MetalDrawable* const pDrawable, MTL::Device* const pDevice)
-    : pDrawable(pDrawable)
-    , pDevice(pDevice)
+Renderer::Renderer(MTL::Device* const pDevice)
+    : pDevice(pDevice)
     , pCommandQueue(pDevice->newCommandQueue())
     , pRenderPipelineState(nullptr, [](MTL::RenderPipelineState* const p) { p->release(); })
 {

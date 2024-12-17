@@ -13,18 +13,16 @@ class Renderer
     
 public:
     
-    Renderer(CA::MetalDrawable* const pDrawable, MTL::Device* const pDevice);
+    Renderer(MTL::Device* const pDevice);
     ~Renderer();
     
     void draw() const;
     
 private:
     
-    CA::MetalDrawable* pDrawable;
+    void buildShaders();
+    
     MTL::Device* const pDevice;
     MTL::CommandQueue* const pCommandQueue;
-    
     std::unique_ptr<MTL::RenderPipelineState, void(*)(MTL::RenderPipelineState*)> pRenderPipelineState;
-    
-    void buildShaders();
 };
