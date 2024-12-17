@@ -26,17 +26,15 @@ Renderer::~Renderer()
     pCommandQueue->release();
 }
 
-void Renderer::draw() const
+void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
 {
-    std::cout << "Window Configuration" << std::endl;
-    
     // Passes drawing information to the GPU by command queue
     MTL::CommandBuffer* pCommandBuffer = pCommandQueue->commandBuffer();
     
     // RenderPassDsc receives pixels from previous steps in rendering pipeline
     // Does 3 things: color attachments, deptch attachments, stencil attachments
     MTL::RenderPassDescriptor* renderPassDsc = MTL::RenderPassDescriptor::alloc()->init();
-    renderPassDsc->colorAttachments()->object(0)->setTexture(pDrawable->texture());
+    renderPassDsc->colorAttachments()->object(0)->setTexture(drawable->texture());
     renderPassDsc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
     renderPassDsc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(1.f, 0.f, 0.f, 1.f)); // Red
     
@@ -64,7 +62,7 @@ void Renderer::draw() const
     renderCommandEdr->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::Integer(0), NS::UInteger(sizeof(triangle) / 3));
     
     renderCommandEdr->endEncoding();
-    pCommandBuffer->presentDrawable(pDrawable);
+    pCommandBuffer->presentDrawable(drawable);
     pCommandBuffer->commit();
     
     renderPassDsc->release();

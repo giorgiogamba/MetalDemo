@@ -16,7 +16,7 @@ public:
     Renderer(MTL::Device* const pDevice);
     ~Renderer();
     
-    void draw() const;
+    void drawFrame(const CA::MetalDrawable* const drawable);
     
 private:
     
