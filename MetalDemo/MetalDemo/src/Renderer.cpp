@@ -17,6 +17,7 @@ Renderer::Renderer(MTL::Device* const pDevice)
     : pDevice(pDevice)
     , pCommandQueue(pDevice->newCommandQueue())
     , pRenderPipelineState(nullptr, [](MTL::RenderPipelineState* const p) { p->release(); })
+    , deltaTime(0.f)
 {
     buildShaders();
 }
@@ -47,6 +48,8 @@ void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
         0.5f, 0.5f, 0.f,
         0.f, -1.f, 0.f
     };
+    
+    deltaTime += 0.1f;
 
     // Use smart pointers instead of simple pointers in order to use the reference counting which invokes the lambda (which releases resources)
     // when the pointer has not references anymore
@@ -59,6 +62,9 @@ void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
     
     // GPU has a limited number of buffers that can allocated depending on the device we are runnign on
     renderCommandEdr->setVertexBuffer(pVertexBuffer.get(), 0, 5);
+    
+    renderCommandEdr->setVertexBytes(&deltaTime, sizeof(float), 7); // only when the passed data is less than 4kb
+    
     renderCommandEdr->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::Integer(0), NS::UInteger(sizeof(triangle) / 3));
     
     renderCommandEdr->endEncoding();

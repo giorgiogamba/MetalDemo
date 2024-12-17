@@ -25,4 +25,6 @@ private:
     MTL::Device* const pDevice;
     MTL::CommandQueue* const pCommandQueue;
     std::unique_ptr<MTL::RenderPipelineState, void(*)(MTL::RenderPipelineState*)> pRenderPipelineState;
+    
+    float deltaTime;
 };

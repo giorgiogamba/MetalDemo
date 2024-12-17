@@ -12,7 +12,7 @@ using namespace metal;
 // Executed for each vertex in parallel in order to transform its position
 
 // "constant" makes the buffer a read only struct
-[[vertex]] float4 vertexShader(const constant packed_float3* triangleVertices [[buffer(5)]], const ushort vertexIndex [[vertex_id]])
+[[vertex]] float4 vertexShader(const constant packed_float3* triangleVertices [[buffer(5)]], const constant float* deltaTime [[buffer(7)]], const ushort vertexIndex [[vertex_id]])
 {
     // Since the script is executed for each vetex in parallel, we need to index the buffer in order
     // to parse different vertices
@@ -29,7 +29,14 @@ using namespace metal;
 //    return float4(x, y, z, 1.f);
     
     // Fixed implementation
-    return float4(triangleVertices[vertexIndex], 1.f);
+    // return float4(triangleVertices[vertexIndex], 1.f);
+    
+    // Implementation for updated drawings
+    const float x = triangleVertices[vertexIndex].x;
+    const float y = triangleVertices[vertexIndex].y + sin(*deltaTime);
+    const float z = triangleVertices[vertexIndex].z; // Moves vertices on the Z axis
+    
+    return float4 (x, y, z, 1.f);
 }
 
 
