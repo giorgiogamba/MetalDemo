@@ -21,8 +21,9 @@
 
     view = (MTKView *) self.view; // Set correct storyboard class in order to make the cast work
     view.device = MTLCreateSystemDefaultDevice(); // alloctaes to gpu
-    pRendererAdapter = [RendererAdapter alloc];
-    [pRendererAdapter draw:view.currentDrawable device:view.device];
+    pRendererAdapter = [[RendererAdapter alloc]initWithMTKView:view];
+    view.delegate = pRendererAdapter;
+    view.preferredFramesPerSecond = 30;
 }
 
 @end

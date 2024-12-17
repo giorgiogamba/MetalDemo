@@ -7,13 +7,16 @@
 
 #import "QuartzCore/CAMetalLayer.h"
 #import "Metal/MTLDevice.h"
+#import "MetalKit/MTKView.h"
 
 #import "Renderer.hpp"
 
-@interface RendererAdapter : NSObject
+// MTKViewDelegate permits to use draw methods invokes with fps rate
+@interface RendererAdapter : NSObject<MTKViewDelegate>
 {
     Renderer* pRenderer;
 }
 
-- (void)draw:(id <CAMetalDrawable>) drawable device: (id <MTLDevice>) device;
+- (nonnull instancetype) initWithMTKView: (MTKView*) pView;
+
 @end
