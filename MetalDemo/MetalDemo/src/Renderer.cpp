@@ -73,15 +73,17 @@ void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
     
     MTL::RenderCommandEncoder* renderCommandEdr = pCommandBuffer->renderCommandEncoder(renderPassDsc);
     
+    renderCommandEdr->setVertexBytes(&deltaTime, sizeof(float), 7); // only when the passed data is less than 4kb
+    
     // In order to connect each rendering step/state with out shaders, we use the renderign pipeline state
     renderCommandEdr->setRenderPipelineState(pRenderPipelineState.get());
     
     // GPU has a limited number of buffers that can allocated depending on the device we are runnign on
     renderCommandEdr->setVertexBuffer(pVertexBuffer.get(), 0, 5);
+    renderCommandEdr->setTriangleFillMode(MTL::TriangleFillModeLines); // wireframe render
     
-    renderCommandEdr->setVertexBytes(&deltaTime, sizeof(float), 7); // only when the passed data is less than 4kb
-    
-    renderCommandEdr->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::Integer(0), NS::UInteger(sizeof(triangle) / 3));
+    // We draw the primitive by pointing its shape and the set of indices composing the primitive, taken from the vertex buffer
+    renderCommandEdr->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle, indices.size(), MTL::IndexTypeUInt16, pIndexBuffer.get(), 0);
     
     renderCommandEdr->endEncoding();
     pCommandBuffer->presentDrawable(drawable);
