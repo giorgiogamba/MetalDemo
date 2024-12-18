@@ -18,3 +18,10 @@ Second Milestone achieved: triangle rendering
 
 Next step will be an animated triangle rendering
 
+---
+
+Third milestone achieved: Animated triangle with indexed drawing
+
+https://github.com/user-attachments/assets/ec1c7b91-ca62-4f3b-b7e6-2944b8c691ed
+
+
