@@ -42,30 +42,48 @@ void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
     // Cpu population, then GPU transfer
     
     // Defines triangle through buffer
-    const std::vector<float> triangle = // defines xyz coordinates for each vertex of the triangle in anticlockwise order
+    const std::vector<float> vertices = // defines xyz coordinates for each vertex of the triangle in anticlockwise order
     {
         -0.5f, 0.5f, 0.f,
         0.5f, 0.5f, 0.f,
-        0.f, -1.f, 0.f
+        0.f, -1.f, 0.f,
+        -0.5f, -1.f, 0.f
+    };
+    
+    // Index drawing: we define a pool of indices and we define triangles as set of indices
+    const std::vector<ushort> indices =
+    {
+        // First triangle
+        0, 1, 2,
+        
+        // Second triangle
+        0, 2, 3
     };
     
     deltaTime += 0.1f;
 
     // Use smart pointers instead of simple pointers in order to use the reference counting which invokes the lambda (which releases resources)
     // when the pointer has not references anymore
-    const std::unique_ptr<MTL::Buffer, void(*)(MTL::Buffer * const)> pVertexBuffer(pDevice->newBuffer(triangle.data(), sizeof(float) * sizeof(triangle), MTL::ResourceStorageModeShared), [](MTL::Buffer * const buffer) { buffer->release(); });
+    
+    // Buffer containing all vertices for all primitives
+    const std::unique_ptr<MTL::Buffer, void(*)(MTL::Buffer * const)> pVertexBuffer(pDevice->newBuffer(vertices.data(), sizeof(float) * sizeof(vertices), MTL::ResourceStorageModeShared), [](MTL::Buffer * const buffer) { buffer->release(); });
+    
+    // Buffer containing all indices for all primitives
+    const std::unique_ptr<MTL::Buffer, void(*)(MTL::Buffer * const)> pIndexBuffer(pDevice->newBuffer(indices.data(), sizeof(ushort) * sizeof(indices), MTL::ResourceStorageModeShared), [](MTL::Buffer * const buffer) { buffer->release(); });
     
     MTL::RenderCommandEncoder* renderCommandEdr = pCommandBuffer->renderCommandEncoder(renderPassDsc);
+    
+    renderCommandEdr->setVertexBytes(&deltaTime, sizeof(float), 7); // only when the passed data is less than 4kb
     
     // In order to connect each rendering step/state with out shaders, we use the renderign pipeline state
     renderCommandEdr->setRenderPipelineState(pRenderPipelineState.get());
     
     // GPU has a limited number of buffers that can allocated depending on the device we are runnign on
     renderCommandEdr->setVertexBuffer(pVertexBuffer.get(), 0, 5);
+    renderCommandEdr->setTriangleFillMode(MTL::TriangleFillModeLines); // wireframe render
     
-    renderCommandEdr->setVertexBytes(&deltaTime, sizeof(float), 7); // only when the passed data is less than 4kb
-    
-    renderCommandEdr->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::Integer(0), NS::UInteger(sizeof(triangle) / 3));
+    // We draw the primitive by pointing its shape and the set of indices composing the primitive, taken from the vertex buffer
+    renderCommandEdr->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle, indices.size(), MTL::IndexTypeUInt16, pIndexBuffer.get(), 0);
     
     renderCommandEdr->endEncoding();
     pCommandBuffer->presentDrawable(drawable);
