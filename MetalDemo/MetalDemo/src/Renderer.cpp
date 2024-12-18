@@ -64,7 +64,12 @@ void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
 
     // Use smart pointers instead of simple pointers in order to use the reference counting which invokes the lambda (which releases resources)
     // when the pointer has not references anymore
-    const std::unique_ptr<MTL::Buffer, void(*)(MTL::Buffer * const)> pVertexBuffer(pDevice->newBuffer(triangle.data(), sizeof(float) * sizeof(triangle), MTL::ResourceStorageModeShared), [](MTL::Buffer * const buffer) { buffer->release(); });
+    
+    // Buffer containing all vertices for all primitives
+    const std::unique_ptr<MTL::Buffer, void(*)(MTL::Buffer * const)> pVertexBuffer(pDevice->newBuffer(vertices.data(), sizeof(float) * sizeof(vertices), MTL::ResourceStorageModeShared), [](MTL::Buffer * const buffer) { buffer->release(); });
+    
+    // Buffer containing all indices for all primitives
+    const std::unique_ptr<MTL::Buffer, void(*)(MTL::Buffer * const)> pIndexBuffer(pDevice->newBuffer(indices.data(), sizeof(ushort) * sizeof(indices), MTL::ResourceStorageModeShared), [](MTL::Buffer * const buffer) { buffer->release(); });
     
     MTL::RenderCommandEncoder* renderCommandEdr = pCommandBuffer->renderCommandEncoder(renderPassDsc);
     
