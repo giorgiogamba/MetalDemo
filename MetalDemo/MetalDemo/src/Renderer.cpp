@@ -42,11 +42,22 @@ void Renderer::drawFrame(const CA::MetalDrawable* const drawable)
     // Cpu population, then GPU transfer
     
     // Defines triangle through buffer
-    const std::vector<float> triangle = // defines xyz coordinates for each vertex of the triangle in anticlockwise order
+    const std::vector<float> vertices = // defines xyz coordinates for each vertex of the triangle in anticlockwise order
     {
         -0.5f, 0.5f, 0.f,
         0.5f, 0.5f, 0.f,
-        0.f, -1.f, 0.f
+        0.f, -1.f, 0.f,
+        -0.5f, -1.f, 0.f
+    };
+    
+    // Index drawing: we define a pool of indices and we define triangles as set of indices
+    const std::vector<ushort> indices =
+    {
+        // First triangle
+        0, 1, 2,
+        
+        // Second triangle
+        0, 2, 3
     };
     
     deltaTime += 0.1f;
